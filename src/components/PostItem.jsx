@@ -1,9 +1,9 @@
-export default function PostItem() {
+export default function PostItem({post}) {
     return (
         <div className="post">
             <div className="post__content">
-                <strong>1. Javascript</strong>
-                <div>Javascript - язык программирования</div>
+                <strong>{post.id}. {post.title}</strong>
+                <div>{post.body}</div>
             </div>
             <div className="post__btns">
                 <button>Удалить</button>
