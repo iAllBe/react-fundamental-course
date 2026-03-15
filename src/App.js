@@ -1,5 +1,5 @@
-import PostItem from "./components/PostItem";
 import {useState} from "react";
+import PostList from "./components/PostList";
 
 export default function App() {
     const [posts, setPosts] = useState([
@@ -10,9 +10,7 @@ export default function App() {
 
     return (
         <div className="App">
-            {posts.map(post =>
-                <PostItem post={post} key={post.id}/>
-            )}
+            <PostList posts={posts} title="Список постов"/>
         </div>
     );
 }
