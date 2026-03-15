@@ -1,3 +1,5 @@
+import MyButton from "./UI/button/MyButton";
+
 export default function PostItem({post}) {
     return (
         <div className="post">
@@ -6,7 +8,7 @@ export default function PostItem({post}) {
                 <div>{post.body}</div>
             </div>
             <div className="post__btns">
-                <button>Удалить</button>
+                <MyButton disabled>Удалить</MyButton>
             </div>
         </div>
     );
