@@ -1,6 +1,6 @@
 import MyButton from "./UI/button/MyButton";
 
-export default function PostItem({post, index}) {
+export default function PostItem({post, index, remove}) {
     return (
         <div className="post">
             <div className="post__content">
@@ -8,7 +8,11 @@ export default function PostItem({post, index}) {
                 <div>{post.body}</div>
             </div>
             <div className="post__btns">
-                <MyButton disabled>Удалить</MyButton>
+                <MyButton
+                    onClick={() => {
+                        remove(post)
+                    }}
+                >Удалить</MyButton>
             </div>
         </div>
     );
