@@ -2,6 +2,7 @@ import {useState} from "react";
 import PostList from "./components/PostList";
 import PostForm from "./components/PostForm";
 import MySelect from "./components/UI/select/MySelect";
+import MyInput from "./components/UI/input/MyInut";
 
 export default function App() {
     const [posts, setPosts] = useState([
@@ -10,10 +11,28 @@ export default function App() {
         {id: 3, title: 'BBBB', body: 'AAAAA'},
     ])
     const [selectedSort, setSelectedSort] = useState("");
+    const [searchQuery, setSearchQuery] = useState("");
+    const sortedAndSearchedPosts = getSortedAndSearchedPosts();
+
+    function getSortedPosts() {
+        if (selectedSort) {
+            return [...posts.sort((a, b) => a[selectedSort].localeCompare(b[selectedSort]))];
+        } else {
+            return posts;
+        }
+    }
+
+    function getSortedAndSearchedPosts() {
+        const sortedPosts = getSortedPosts();
+        if (searchQuery) {
+            return sortedPosts.filter(p => p.title.toLowerCase().includes(searchQuery.toLowerCase()));
+        } else {
+            return sortedPosts;
+        }
+    }
 
     function sortPosts(sort) {
         setSelectedSort(sort);
-        setPosts([...posts.sort((a, b) => a[sort].localeCompare(b[sort]))]);
     }
 
     function createPost(newPost) {
@@ -39,11 +58,16 @@ export default function App() {
                 {value: "body", name: "По описанию"}
             ]}
         />
-        {posts.length
+        <MyInput
+            placeholder="Поиск"
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
+        />
+        {sortedAndSearchedPosts.length
             ?
             <PostList
                 remove={removePost}
-                posts={posts}
+                posts={sortedAndSearchedPosts}
                 title="Список постов"
             />
             :
