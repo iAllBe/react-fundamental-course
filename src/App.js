@@ -1,22 +1,21 @@
 import {useState} from "react";
 import PostList from "./components/PostList";
 import PostForm from "./components/PostForm";
-import MySelect from "./components/UI/select/MySelect";
-import MyInput from "./components/UI/input/MyInut";
+import PostFilter from "./components/UI/PostFilter";
 
 export default function App() {
     const [posts, setPosts] = useState([
         {id: 1, title: 'AAAA', body: 'CCCC'},
         {id: 2, title: 'CCCC', body: 'BBBB'},
         {id: 3, title: 'BBBB', body: 'AAAAA'},
+        {id: 4, title: 'aaaa', body: 'zzzzz'}
     ])
-    const [selectedSort, setSelectedSort] = useState("");
-    const [searchQuery, setSearchQuery] = useState("");
+    const [filter, setFilter] = useState({sort: '', query: ''});
     const sortedAndSearchedPosts = getSortedAndSearchedPosts();
 
     function getSortedPosts() {
-        if (selectedSort) {
-            return [...posts.sort((a, b) => a[selectedSort].localeCompare(b[selectedSort]))];
+        if (filter.sort) {
+            return [...posts.sort((a, b) => a[filter.sort].localeCompare(b[filter.sort]))];
         } else {
             return posts;
         }
@@ -24,15 +23,11 @@ export default function App() {
 
     function getSortedAndSearchedPosts() {
         const sortedPosts = getSortedPosts();
-        if (searchQuery) {
-            return sortedPosts.filter(p => p.title.toLowerCase().includes(searchQuery.toLowerCase()));
+        if (filter.query) {
+            return sortedPosts.filter(p => p.title.toLowerCase().includes(filter.query.toLowerCase()));
         } else {
             return sortedPosts;
         }
-    }
-
-    function sortPosts(sort) {
-        setSelectedSort(sort);
     }
 
     function createPost(newPost) {
@@ -49,19 +44,9 @@ export default function App() {
             create={createPost}
         />
         <hr style={{margin: "10px 0"}}/>
-        <MySelect
-            value={selectedSort}
-            onChange={sortPosts}
-            defaultValue={"Сортировка"}
-            options={[
-                {value: "title", name: "По заголовку"},
-                {value: "body", name: "По описанию"}
-            ]}
-        />
-        <MyInput
-            placeholder="Поиск"
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
+        <PostFilter
+            filter={filter}
+            setFilter={setFilter}
         />
         {sortedAndSearchedPosts.length
             ?
