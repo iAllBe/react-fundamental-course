@@ -48,15 +48,10 @@ export default function App() {
             filter={filter}
             setFilter={setFilter}
         />
-        {sortedAndSearchedPosts.length
-            ?
-            <PostList
-                remove={removePost}
-                posts={sortedAndSearchedPosts}
-                title="Список постов"
-            />
-            :
-            <h1 style={{textAlign: "center"}}>Постов не найдено</h1>
-        }
+        <PostList
+            remove={removePost}
+            posts={sortedAndSearchedPosts}
+            title="Список постов"
+        />
     </div>);
 }
