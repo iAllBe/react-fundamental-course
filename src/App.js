@@ -1,7 +1,9 @@
 import {useState} from "react";
 import PostList from "./components/PostList";
-import PostForm from "./components/PostForm";
 import PostFilter from "./components/UI/PostFilter";
+import MyButton from "./components/UI/button/MyButton";
+import MyModal from "./components/modal/MyModal";
+import PostForm from "./components/PostForm";
 
 export default function App() {
     const [posts, setPosts] = useState([
@@ -12,6 +14,7 @@ export default function App() {
     ])
     const [filter, setFilter] = useState({sort: '', query: ''});
     const sortedAndSearchedPosts = getSortedAndSearchedPosts();
+    const [modal, setModal] = useState(false);
 
     function getSortedPosts() {
         if (filter.sort) {
@@ -31,7 +34,8 @@ export default function App() {
     }
 
     function createPost(newPost) {
-        setPosts([...posts, newPost])
+        setPosts([...posts, newPost]);
+        setModal(false);
     }
 
     function removePost(post) {
@@ -39,10 +43,21 @@ export default function App() {
     }
 
     return (<div className="App">
-        <PostForm
-            posts={posts}
-            create={createPost}
-        />
+        <MyButton
+            style={{marginTop: '15px'}}
+            onClick={() => setModal(true)}
+        >
+            Добавить пост
+        </MyButton>
+        <MyModal
+            visible={modal}
+            setVisible={setModal}
+        >
+            <PostForm
+                posts={posts}
+                create={createPost}
+            />
+        </MyModal>
         <hr style={{margin: "10px 0"}}/>
         <PostFilter
             filter={filter}
