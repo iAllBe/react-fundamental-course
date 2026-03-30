@@ -4,6 +4,7 @@ import PostFilter from "./components/UI/PostFilter";
 import MyButton from "./components/UI/button/MyButton";
 import MyModal from "./components/modal/MyModal";
 import PostForm from "./components/PostForm";
+import usePosts from "./hooks/usePosts";
 
 export default function App() {
     const [posts, setPosts] = useState([
@@ -13,25 +14,8 @@ export default function App() {
         {id: 4, title: 'aaaa', body: 'zzzzz'}
     ])
     const [filter, setFilter] = useState({sort: '', query: ''});
-    const sortedAndSearchedPosts = getSortedAndSearchedPosts();
+    const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
     const [modal, setModal] = useState(false);
-
-    function getSortedPosts() {
-        if (filter.sort) {
-            return [...posts.sort((a, b) => a[filter.sort].localeCompare(b[filter.sort]))];
-        } else {
-            return posts;
-        }
-    }
-
-    function getSortedAndSearchedPosts() {
-        const sortedPosts = getSortedPosts();
-        if (filter.query) {
-            return sortedPosts.filter(p => p.title.toLowerCase().includes(filter.query.toLowerCase()));
-        } else {
-            return sortedPosts;
-        }
-    }
 
     function createPost(newPost) {
         setPosts([...posts, newPost]);
