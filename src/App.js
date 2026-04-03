@@ -6,20 +6,27 @@ import MyModal from "./components/modal/MyModal";
 import PostForm from "./components/PostForm";
 import usePosts from "./hooks/usePosts";
 import PostService from "./API/PostService";
+import Loader from "./components/UI/loader/Loader";
 
 export default function App() {
     const [posts, setPosts] = useState([])
     const [filter, setFilter] = useState({sort: '', query: ''});
     const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
     const [modal, setModal] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
 
     useEffect(() => {
         fetchPosts()
     }, []);
 
     async function fetchPosts() {
-        const posts = await PostService.getAll();
-        setPosts(posts);
+        setIsLoading(true);
+        setTimeout(async () => {
+            const posts = await PostService.getAll();
+            setPosts(posts);
+            setIsLoading(false);
+        }, 500);
     }
 
     function createPost(newPost) {
@@ -52,10 +59,15 @@ export default function App() {
             filter={filter}
             setFilter={setFilter}
         />
-        <PostList
-            remove={removePost}
-            posts={sortedAndSearchedPosts}
-            title="Список постов"
-        />
+        {isLoading
+            ?
+            <Loader/>
+            :
+            <PostList
+                remove={removePost}
+                posts={sortedAndSearchedPosts}
+                title="Список постов"
+            />
+        }
     </div>);
 }
