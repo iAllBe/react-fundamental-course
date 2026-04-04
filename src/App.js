@@ -7,27 +7,22 @@ import PostForm from "./components/PostForm";
 import usePosts from "./hooks/usePosts";
 import PostService from "./API/PostService";
 import Loader from "./components/UI/loader/Loader";
+import useFetching from "./hooks/useFetching";
 
 export default function App() {
     const [posts, setPosts] = useState([])
     const [filter, setFilter] = useState({sort: '', query: ''});
     const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
     const [modal, setModal] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [fetchPosts, isLoading, postError] = useFetching(async () => {
+        const posts = await PostService.getAll();
+        setPosts(posts);
+    });
 
 
     useEffect(() => {
         fetchPosts()
     }, []);
-
-    async function fetchPosts() {
-        setIsLoading(true);
-        setTimeout(async () => {
-            const posts = await PostService.getAll();
-            setPosts(posts);
-            setIsLoading(false);
-        }, 500);
-    }
 
     function createPost(newPost) {
         setPosts([...posts, newPost]);
@@ -59,6 +54,9 @@ export default function App() {
             filter={filter}
             setFilter={setFilter}
         />
+        {postError &&
+            <h1>Ошибка:${postError}</h1>
+        }
         {isLoading
             ?
             <Loader/>
