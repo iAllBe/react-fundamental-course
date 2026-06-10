@@ -8,7 +8,8 @@ import usePosts from "./hooks/usePosts";
 import PostService from "./API/PostService";
 import Loader from "./components/UI/loader/Loader";
 import useFetching from "./hooks/useFetching";
-import {getPageCount, getPagesArray} from "./utils/page";
+import {getPageCount} from "./utils/page";
+import Pagination from "./components/UI/pagination/Pagination";
 
 export default function App() {
     const [posts, setPosts] = useState([])
@@ -18,7 +19,6 @@ export default function App() {
     const [totalPages, setTotalPages] = useState(0);
     const [limit, setLimit] = useState(10);
     const [page, setPage] = useState(1);
-    let pagesArray = getPagesArray(totalPages);
     const [fetchPosts, isLoading, postError] = useFetching(async () => {
         const posts = await PostService.getAll(limit, page);
         setPosts(posts.data);
@@ -39,48 +39,45 @@ export default function App() {
         setPosts(posts.filter(p => post.id !== p.id));
     }
 
-    return (<div className="App">
-        <MyButton
-            style={{marginTop: '15px'}}
-            onClick={() => setModal(true)}
-        >
-            Добавить пост
-        </MyButton>
-        <MyModal
-            visible={modal}
-            setVisible={setModal}
-        >
-            <PostForm
-                posts={posts}
-                create={createPost}
+    return (
+        <div className="App">
+            <MyButton
+                style={{marginTop: '15px'}}
+                onClick={() => setModal(true)}
+            >
+                Добавить пост
+            </MyButton>
+            <MyModal
+                visible={modal}
+                setVisible={setModal}
+            >
+                <PostForm
+                    posts={posts}
+                    create={createPost}
+                />
+            </MyModal>
+            <hr style={{margin: "10px 0"}}/>
+            <PostFilter
+                filter={filter}
+                setFilter={setFilter}
             />
-        </MyModal>
-        <hr style={{margin: "10px 0"}}/>
-        <PostFilter
-            filter={filter}
-            setFilter={setFilter}
-        />
-        {postError &&
-            <h1>Ошибка:${postError}</h1>
-        }
-        {isLoading
-            ?
-            <Loader/>
-            :
-            <PostList
-                remove={removePost}
-                posts={sortedAndSearchedPosts}
-                title="Список постов"
+            {postError &&
+                <h1>Ошибка:${postError}</h1>
+            }
+            {isLoading
+                ?
+                <Loader/>
+                :
+                <PostList
+                    remove={removePost}
+                    posts={sortedAndSearchedPosts}
+                    title="Список постов"
+                />
+            }
+            <Pagination
+                totalPages={totalPages}
+                setPage={setPage}
+                page={page}
             />
-        }
-        <div className="page__wrapper">
-            {pagesArray.map(p =>
-                <span
-                    onClick={() => setPage(p)}
-                    key={p}
-                    className={p === page ? 'page page__current' : 'page'}
-                >{p}</span>
-            )}
-        </div>
-    </div>);
+        </div>);
 }
