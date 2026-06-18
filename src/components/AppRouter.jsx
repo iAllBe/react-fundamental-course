@@ -2,6 +2,7 @@ import {Route, Routes} from "react-router-dom";
 import Posts from "../pages/Posts";
 import About from "../pages/About";
 import Error from "../pages/Error";
+import PostIdPage from "../pages/PostIdPage";
 
 export default function AppRouter() {
     return (
@@ -12,8 +13,15 @@ export default function AppRouter() {
             >
             </Route>
             <Route
+                exact
                 path="/posts"
                 element={<Posts/>}
+            >
+            </Route>
+            <Route
+                exact
+                path="/posts/:id"
+                element={<PostIdPage/>}
             >
             </Route>
             <Route

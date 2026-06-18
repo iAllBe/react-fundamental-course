@@ -1,6 +1,9 @@
 import MyButton from "./UI/button/MyButton";
+import {useNavigate} from "react-router-dom";
 
 export default function PostItem({post, index, remove}) {
+    const router = useNavigate();
+
     return (
         <div className="post">
             <div className="post__content">
@@ -10,9 +13,18 @@ export default function PostItem({post, index, remove}) {
             <div className="post__btns">
                 <MyButton
                     onClick={() => {
+                        router('/posts/' + post.id)
+                    }}
+                >
+                    Открыть
+                </MyButton>
+                <MyButton
+                    onClick={() => {
                         remove(post)
                     }}
-                >Удалить</MyButton>
+                >
+                    Удалить
+                </MyButton>
             </div>
         </div>
     );
