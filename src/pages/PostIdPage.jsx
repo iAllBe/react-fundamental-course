@@ -40,7 +40,7 @@ export default function PostIdPage() {
                     {comments.map(com => {
                         return (
                             <div style={{marginBottom: '5px'}}>
-                                <div>{com.email}</div>
+                                <div><b>{com.email}</b></div>
                                 <div>{com.body}</div>
                             </div>
                         )
