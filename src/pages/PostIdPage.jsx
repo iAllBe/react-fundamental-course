@@ -39,7 +39,10 @@ export default function PostIdPage() {
                     <h3 style={{margin: '40px 0 5px 0'}}>Комментарии:</h3>
                     {comments.map(com => {
                         return (
-                            <div style={{marginBottom: '5px'}}>
+                            <div
+                                style={{marginBottom: '5px'}}
+                                key={com.id}
+                            >
                                 <div><b>{com.email}</b></div>
                                 <div>{com.body}</div>
                             </div>
