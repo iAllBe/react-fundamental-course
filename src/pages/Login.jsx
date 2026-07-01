@@ -9,7 +9,7 @@ export default function Login() {
     function Login(e) {
         e.preventDefault();
         setIsAuth(true);
-
+        localStorage.setItem('auth', 'true');
     }
 
     return (

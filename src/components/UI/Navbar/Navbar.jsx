@@ -11,7 +11,10 @@ export default function Navbar() {
             {isAuth
                 &&
                 <MyButton
-                    onClick={() => setIsAuth(false)}
+                    onClick={() => {
+                        setIsAuth(false);
+                        localStorage.removeItem('auth')
+                    }}
                 >Выйти</MyButton>
             }
 
